@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .movie-selection, .time-selection {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .confirmation {
+            margin-top: 20px;
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Movie Booking System</h1>
+
+        <div class="movie-selection">
+            <label for="movie">Select Movie:</label>
+            <select id="movie" onchange="updateTimes()">
+                <option value="" disabled selected>Select a movie</option>
+                <option value="Movie1">Movie 1</option>
+                <option value="Movie2">Movie 2</option>
+                <option value="Movie3">Movie 3</option>
+            </select>
+        </div>
+
+        <div class="time-selection">
+            <label for="time">Select Time Slot:</label>
+            <select id="time" disabled>
+                <option value="" disabled selected>Select a time</option>
+            </select>
+        </div>
+
+        <button id="confirmButton" disabled onclick="confirmBooking()">Confirm Booking</button>
+
+        <div id="confirmation" class="confirmation"></div>
+    </div>
+
+    <script>
+        const movieTimes = {
+            "Movie1": ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"],
+            "Movie2": ["11:00 AM", "2:00 PM", "5:00 PM", "8:00 PM"],
+            "Movie3": ["12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]
+        };
+
+        function updateTimes() {
+            const movieSelect = document.getElementById("movie");
+            const timeSelect = document.getElementById("time");
+            const confirmButton = document.getElementById("confirmButton");
+            const movie = movieSelect.value;
+
+            // Clear previous times and disable the button
+            timeSelect.innerHTML = '<option value="" disabled selected>Select a time</option>';
+            confirmButton.disabled = true;
+            
+            if (movie && movieTimes[movie]) {
+                timeSelect.disabled = false;
+
+                // Populate time slots for the selected movie
+                movieTimes[movie].forEach(function(time) {
+                    let option = document.createElement("option");
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                });
+            } else {
+                timeSelect.disabled = true;
+            }
+        }
+
+        function confirmBooking() {
+            const movieSelect = document.getElementById("movie");
+            const timeSelect = document.getElementById("time");
+            const confirmationDiv = document.getElementById("confirmation");
+
+            const movie = movieSelect.value;
+            const time = timeSelect.value;
+
+            if (movie && time) {
+                confirmationDiv.textContent = `Booking confirmed for "${movie}" at ${time}. Enjoy your movie!`;
+            }
+        }
+
+        // Enable the "Confirm" button once a time is selected
+        document.getElementById("time").addEventListener("change", function() {
+            const confirmButton = document.getElementById("confirmButton");
+            confirmButton.disabled = !this.value;
+        });
+    </script>
+</body>
+</html>

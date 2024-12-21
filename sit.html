@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Allotment System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .theater {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-gap: 10px;
+            margin-bottom: 20px;
+            justify-items: center;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: #6c757d;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .seat.selected {
+            background-color: #28a745;
+        }
+
+        .seat.booked {
+            background-color: #dc3545;
+            cursor: not-allowed;
+        }
+
+        .seat:hover:not(.booked):not(.selected) {
+            background-color: #17a2b8;
+        }
+
+        .seat-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .seat-info span {
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .confirmation {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Seat Allotment System</h1>
+
+        <div class="theater" id="theater"></div>
+
+        <div class="seat-info">
+            <span>Click on a seat to select it. Selected seats will turn green.</span>
+        </div>
+
+        <button id="confirmButton" disabled onclick="confirmSelection()">Confirm Selection</button>
+
+        <div id="confirmation" class="confirmation"></div>
+    </div>
+
+    <script>
+        // Setup a grid of seats (10 rows, 10 columns)
+        const rows = 10;
+        const cols = 10;
+        const theater = document.getElementById('theater');
+        const confirmButton = document.getElementById('confirmButton');
+        const confirmationDiv = document.getElementById('confirmation');
+        let selectedSeats = [];
+
+        // Initialize theater with available seats
+        function initializeSeats() {
+            for (let i = 0; i < rows * cols; i++) {
+                const seat = document.createElement('div');
+                seat.classList.add('seat');
+                seat.dataset.index = i;
+                seat.addEventListener('click', toggleSeatSelection);
+                theater.appendChild(seat);
+            }
+        }
+
+        // Toggle seat selection
+        function toggleSeatSelection(event) {
+            const seat = event.target;
+            if (seat.classList.contains('booked')) return; // Do nothing if seat is booked
+            seat.classList.toggle('selected');
+
+            const seatIndex = seat.dataset.index;
+            if (seat.classList.contains('selected')) {
+                selectedSeats.push(seatIndex);
+            } else {
+                selectedSeats = selectedSeats.filter(index => index !== seatIndex);
+            }
+
+            confirmButton.disabled = selectedSeats.length === 0;
+        }
+
+        // Confirm seat selection
+        function confirmSelection() {
+            if (selectedSeats.length > 0) {
+                confirmationDiv.textContent = `You have successfully selected ${selectedSeats.length} seat(s).`;
+                selectedSeats.forEach(seatIndex => {
+                    const seat = document.querySelector(`.seat[data-index='${seatIndex}']`);
+                    seat.classList.add('booked');
+                    seat.classList.remove('selected');
+                });
+                selectedSeats = []; // Clear selection
+                confirmButton.disabled = true;
+            } else {
+                confirmationDiv.textContent = 'Please select at least one seat.';
+            }
+        }
+
+        // Initialize the seat grid
+        initializeSeats();
+    </script>
+</body>
+</html>

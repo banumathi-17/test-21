@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #28a745;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirmation {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Thank You for Booking!</h1>
+        <p class="message">You have successfully booked your ticket. We look forward to seeing you!</p>
+        
+        <button onclick="goBack()">Go Back</button>
+        
+        <div id="confirmation" class="confirmation"></div>
+    </div>
+
+    <script>
+        // This function can be used to redirect the user to another page
+        function goBack() {
+            // Here, we are simply showing a confirmation message for demo purposes
+            document.getElementById("confirmation").textContent = "Your booking is confirmed. Enjoy the show!";
+        }
+    </script>
+</body>
+</html>
